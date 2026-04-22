@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  cypress:
+    build: .
+    container_name: orangehrm-tests
+    environment:
+      CYPRESS_username: Admin
+      CYPRESS_password: admin123

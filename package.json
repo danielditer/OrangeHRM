@@ -1,0 +1,33 @@
+{
+  "name": "automation-portfolio-pro",
+  "version": "1.0.0",
+  "description": "Enterprise QA Automation Framework using Cypress + TypeScript + OrangeHRM",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "playwright:test": "playwright test",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "smoke": "cypress run --spec 'cypress/e2e/smoke/**/*.cy.ts'",
+    "regression": "cypress run --spec 'cypress/e2e/regression/**/*.cy.ts'",
+    "api": "cypress run --spec 'cypress/e2e/api/**/*.cy.ts'",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "test": "npm run cy:run"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/mocha": "^10.0.10",
+    "cypress": "^15.13.1",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^4.4.1",
+    "mochawesome-report-generator": "^6.3.2",
+    "typescript": "^5.5.3",
+    "@faker-js/faker": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0"
+  },
+  "private": true
+}

@@ -1,0 +1,13 @@
+
+name: Playwright CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
