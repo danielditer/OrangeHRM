@@ -1,5 +1,4 @@
 import { employeeFactory } from '../../factories/employee.factory'
-import { captureVisibleEmployeeId } from "../../support/employee";
 
 describe('Edit Employee', () => {
     beforeEach(() => {
@@ -7,10 +6,11 @@ describe('Edit Employee', () => {
         cy.visit('/web/index.php/dashboard/index')
     })
 
-    it('should edit employee by Employee ID', () => {
+    it('should edit employee record after creating it', () => {
         const employee = employeeFactory()
 
         cy.contains('PIM').click()
+
         cy.contains('Add Employee').click()
 
         cy.get('[name="firstName"]').type(employee.firstName)
@@ -18,30 +18,32 @@ describe('Edit Employee', () => {
 
         cy.contains('Save').click()
 
-        captureVisibleEmployeeId().then((employeeId) => {
-            cy.contains('Employee List').click()
+        cy.url({ timeout: 10000 }).should('include', 'viewPersonalDetails')
 
-            cy.intercept('GET', '**/api/v2/pim/employees**').as('employees')
+        cy.contains('Employee List').click()
 
-            cy.get('.oxd-form input')
-                .eq(1)
-                .clear()
-                .type(employeeId)
+        cy.intercept('GET', '**/api/v2/pim/employees**').as('employees')
 
-            cy.contains('button', 'Search').click()
+        cy.contains('label', 'Employee Name')
+            .parents('.oxd-input-group')
+            .find('input')
+            .type(`${employee.firstName} ${employee.lastName}`, { delay: 50 })
 
-            cy.wait('@employees')
+        cy.contains('button', 'Search').click()
 
-            cy.contains(employeeId).click()
+        cy.wait('@employees')
 
-            cy.get('[name="firstName"]')
-                .clear()
-                .type('Updated')
+        cy.get('.oxd-table-body', { timeout: 10000 })
+            .contains(employee.firstName)
+            .click()
 
-            cy.contains('Save').click()
+        cy.get('[name="firstName"]', { timeout: 10000 })
+            .clear()
+            .type('Updated')
 
-            cy.contains('Successfully Updated')
-                .should('be.visible')
-        })
+        cy.contains('Save').click()
+        
+        cy.contains('Successfully Updated', { timeout: 10000 })
+            .should('be.visible')
     })
 })
